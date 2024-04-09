@@ -3,6 +3,8 @@ import '../app/screens/widgets/custom_input.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 
+import '../app/screens/widgets/radio_button.dart';
+
 
 
 void main() => runApp(
@@ -101,15 +103,15 @@ class _CadastroPageState extends State<CadastroPage> {
                   controller: _motivoController,
                 ),
                 const SizedBox(height: 40.0),
-                CustomInput(
-                  labelText: 'Você estuda?',
-                  controller: _estudaController,
-                ),
+                YesNoRadioButton(
+                label: 'Você estuda?',
+                onSelection: (bool? value) {
+                },),
                 const SizedBox(height: 40.0),
-                CustomInput(
-                  labelText: 'Você estuda?',
-                  controller: _trabalhaController,
-                ),
+                YesNoRadioButton(
+                label: 'Você Trabalha?',
+                onSelection: (bool? value) {
+                },),
                 const SizedBox(height: 80.0),
                 ElevatedButton(
                 style: ButtonStyle(

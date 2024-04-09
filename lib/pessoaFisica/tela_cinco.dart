@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../app/screens/widgets/custom_input.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
-
+import '../app/screens/widgets/radio_button.dart';
 
 
 void main() => runApp(
@@ -91,10 +91,10 @@ class _CadastroPageState extends State<CadastroPage> {
                   inputType: TextInputType.datetime,
                 ),
                 const SizedBox(height: 40.0),
-                CustomInput(
-                  labelText: 'Possui cadeira de banho?',
-                  controller: _cadeiraBanhoController,
-                ),
+                YesNoRadioButton(
+                label: 'Possui cadeira de banho?', 
+                onSelection: (bool? value) {
+                },),
                 const SizedBox(height: 80.0),
                 ElevatedButton(
                 style: ButtonStyle(
