@@ -6,17 +6,17 @@ class CustomInput extends StatelessWidget {
   final bool obscureText;
   final TextInputType keyboardType;
   final TextInputType? inputType;
-  final FormFieldValidator<String>? validator; // Alteração aqui
+  final FormFieldValidator<String>? validator;
 
   const CustomInput({
-    Key? key,
+    super.key,
     required this.labelText,
     required this.controller,
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
     this.validator,
-    this.inputType, 
-  }) : super(key: key);
+    this.inputType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +29,8 @@ class CustomInput extends StatelessWidget {
         border: const OutlineInputBorder(),
         contentPadding: const EdgeInsets.symmetric(horizontal: 12),
         // floatingLabelBehavior: FloatingLabelBehavior.always,
-
       ),
-      
+
       validator: validator, // Alteração aqui
     );
   }

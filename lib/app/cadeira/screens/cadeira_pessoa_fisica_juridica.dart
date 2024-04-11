@@ -1,33 +1,22 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
-import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
+import 'package:project/app/cadeira/screens/pessoa_fisica/pessoa_fisica_dados_pessoais_page.dart';
+import 'package:project/app/cadeira/screens/pessoa_juridica/pessoa_juridica_dados_pessoais.dart';
 
-void main() => runApp(
-      DevicePreview(
-        enabled: !kReleaseMode,
-        builder: (context) => MyApp(), // Wrap your app
-      ),
-    );
+class CadeiraPessoaFisicaJuridicaPage extends StatefulWidget {
+  const CadeiraPessoaFisicaJuridicaPage({super.key});
+  static String route = '/cadeira-pessoa-fisica-juridica-page';
 
-class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
-      home: MyHomePage(),
-    );
-  }
+  _CadeiraPessoaFisicaJuridicaPageState createState() =>
+      _CadeiraPessoaFisicaJuridicaPageState();
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _CadeiraPessoaFisicaJuridicaPageState
+    extends State<CadeiraPessoaFisicaJuridicaPage> {
   bool _agreeTerms = false;
-  String _personType = '';
+  String _personType = 'physical';
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -58,7 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 const SizedBox(height: 16),
                 CheckboxListTile(
-                  title: Text('Estou ciente e concordo com os termos e condições'),
+                  title: const Text(
+                      'Estou ciente e concordo com os termos e condições'),
                   value: _agreeTerms,
                   onChanged: (bool? value) {
                     setState(() {
@@ -96,19 +86,28 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(height: 80.0),
                 ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.teal),
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.teal),
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // Ação do botão
+                      if (_personType == 'physical') {
+                        Navigator.of(context)
+                            .pushNamed(PessoaFisicaDadosPessoaisPage.route);
+                      } else {
+                        Navigator.of(context)
+                            .pushNamed(PessoaJuridicaDadosPessoaisPage.route);
+                      }
                     }
                   },
                   child: const Text('Avançar'),
                 ),
                 TextButton(
                   style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all<Color>(Colors.teal),
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.teal),
                   ),
                   onPressed: () {
                     // Ação para limpar o formulário
