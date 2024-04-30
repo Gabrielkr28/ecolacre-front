@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project/app/core/util/app_strings.dart';
 import 'package:project/app/home/widgets/option_button.dart';
-import 'package:project/app/cadeira/screens/cadeira_pessoa_fisica_juridica.dart';
+import 'package:project/app/cadeira/screens/cadeira_rodas_submenu.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -36,7 +36,7 @@ class HomePage extends StatelessWidget {
               text: AppStrings.wheelchair,
               icon: Icons.wheelchair_pickup,
               onPress: () => Navigator.of(context)
-                  .pushNamed(CadeiraPessoaFisicaJuridicaPage.route),
+                    .pushNamed(CadeiraRodasSubmenuPage.route),
             ),
             OptionButton(
               text: AppStrings.newsletters,
