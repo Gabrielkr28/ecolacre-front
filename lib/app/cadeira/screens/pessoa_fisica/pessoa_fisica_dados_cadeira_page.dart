@@ -1,6 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:project/app/cadeira/screens/pessoa_fisica/cubit/pessoa_fisica_cubit.dart';
+import 'package:project/app/core/util/application_binding.dart';
 import 'package:project/app/home/widgets/custom_input.dart';
 import 'package:project/app/home/widgets/radio_button.dart';
 
@@ -16,23 +18,17 @@ class PessoaFisicaDadosCadeiraPage extends StatefulWidget {
 class _PessoaFisicaDadosCadeiraPageState
     extends State<PessoaFisicaDadosCadeiraPage> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _larguraAssentoDesejadaController;
-  late TextEditingController _larguraPortaController;
-  late TextEditingController _cadeiraBanhoController;
+
+  late PessoaFisicaCubit _pessoaFisicaCubit;
 
   @override
   void initState() {
+    _pessoaFisicaCubit = BlocProvider.of<PessoaFisicaCubit>(context);
     super.initState();
-    _larguraAssentoDesejadaController = TextEditingController();
-    _larguraPortaController = TextEditingController();
-    _cadeiraBanhoController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _larguraAssentoDesejadaController.dispose();
-    _larguraPortaController.dispose();
-    _cadeiraBanhoController.dispose();
     super.dispose();
   }
 
@@ -65,13 +61,14 @@ class _PessoaFisicaDadosCadeiraPageState
               children: <Widget>[
                 const SizedBox(height: 40.0),
                 CustomInput(
-                  labelText: 'Qual Largura de assento você deseja? (cm)',
-                  controller: _larguraAssentoDesejadaController,
+                  labelText: 'Qual largura de assento você deseja? (cm)',
+                  controller:
+                      _pessoaFisicaCubit.larguraAssentoDesejadaController,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
                   labelText: 'Qual menor largura de porta da sua casa? (cm)',
-                  controller: _larguraPortaController,
+                  controller: _pessoaFisicaCubit.larguraPortaController,
                   inputType: TextInputType.datetime,
                 ),
                 const SizedBox(height: 40.0),
@@ -87,9 +84,9 @@ class _PessoaFisicaDadosCadeiraPageState
                     foregroundColor: MaterialStateProperty.all<Color>(
                         Colors.white), // Cor do texto do botão
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      // Ação do botão
+                      await _pessoaFisicaCubit.criarSolicitacao();
                     }
                   },
                   child: const Text('Avançar'),
@@ -99,7 +96,7 @@ class _PessoaFisicaDadosCadeiraPageState
                     foregroundColor: MaterialStateProperty.all<Color>(
                         Colors.teal), // Cor do texto do botão
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     // Ação para limpar o formulário
                   },
                   child: const Text('Limpar formulário'),

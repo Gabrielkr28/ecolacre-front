@@ -1,7 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:project/app/cadeira/screens/pessoa_fisica/cubit/pessoa_fisica_cubit.dart';
 import 'package:project/app/cadeira/screens/pessoa_fisica/pessoa_fisica_dados_cadeira_page.dart';
+import 'package:project/app/core/util/application_binding.dart';
 import '../../../home/widgets/custom_input.dart';
 
 class PessoaFisicaDadosMetragemCadeiraPage extends StatefulWidget {
@@ -15,26 +17,16 @@ class PessoaFisicaDadosMetragemCadeiraPage extends StatefulWidget {
 class _PessoaFisicaDadosMetragemCadeiraPageState
     extends State<PessoaFisicaDadosMetragemCadeiraPage> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _larguraCostasController;
-  late TextEditingController _larguraQuadrilController;
-  late TextEditingController _pesoController;
-  late TextEditingController _alturaController;
+  late PessoaFisicaCubit _pessoaFisicaCubit;
 
   @override
   void initState() {
+    _pessoaFisicaCubit = BlocProvider.of<PessoaFisicaCubit>(context);
     super.initState();
-    _larguraCostasController = TextEditingController();
-    _larguraQuadrilController = TextEditingController();
-    _pesoController = TextEditingController();
-    _alturaController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _larguraCostasController.dispose();
-    _larguraQuadrilController.dispose();
-    _pesoController.dispose();
-    _alturaController.dispose();
     super.dispose();
   }
 
@@ -68,23 +60,23 @@ class _PessoaFisicaDadosMetragemCadeiraPageState
                 const SizedBox(height: 40.0),
                 CustomInput(
                   labelText: 'Largura das costas (cm)',
-                  controller: _larguraCostasController,
+                  controller: _pessoaFisicaCubit.larguraCostasController,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
                   labelText: 'Quadril (cm)',
-                  controller: _larguraQuadrilController,
+                  controller: _pessoaFisicaCubit.larguraQuadrilController,
                   inputType: TextInputType.datetime,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
                   labelText: 'Peso (quilos)',
-                  controller: _pesoController,
+                  controller: _pessoaFisicaCubit.pesoController,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
                   labelText: 'Altura (Metros)',
-                  controller: _alturaController,
+                  controller: _pessoaFisicaCubit.alturaController,
                 ),
                 const SizedBox(height: 80.0),
                 ElevatedButton(
@@ -107,7 +99,8 @@ class _PessoaFisicaDadosMetragemCadeiraPageState
                     foregroundColor: MaterialStateProperty.all<Color>(
                         Colors.teal), // Cor do texto do botão
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    await _pessoaFisicaCubit.criarSolicitacao();
                     // Ação para limpar o formulário
                   },
                   child: const Text('Limpar formulário'),

@@ -1,7 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:project/app/cadeira/screens/pessoa_fisica/cubit/pessoa_fisica_cubit.dart';
 import 'package:project/app/cadeira/screens/pessoa_fisica/pessoa_fisica_endereco_page.dart';
+import 'package:project/app/core/util/application_binding.dart';
 import 'package:project/app/home/widgets/custom_input.dart';
 
 class PessoaFisicaDadosPessoaisPage extends StatefulWidget {
@@ -16,26 +18,16 @@ class PessoaFisicaDadosPessoaisPage extends StatefulWidget {
 class _PessoaFisicaDadosPessoaisPageState
     extends State<PessoaFisicaDadosPessoaisPage> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _nomeController;
-  late TextEditingController _dataNascimentoController;
-  late TextEditingController _cpfController;
-  late TextEditingController _rgController;
+  late PessoaFisicaCubit _pessoaFisicaCubit;
 
   @override
   void initState() {
+    _pessoaFisicaCubit = BlocProvider.of<PessoaFisicaCubit>(context);
     super.initState();
-    _nomeController = TextEditingController();
-    _dataNascimentoController = TextEditingController();
-    _cpfController = TextEditingController();
-    _rgController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _nomeController.dispose();
-    _dataNascimentoController.dispose();
-    _cpfController.dispose();
-    _rgController.dispose();
     super.dispose();
   }
 
@@ -68,24 +60,28 @@ class _PessoaFisicaDadosPessoaisPageState
               children: <Widget>[
                 const SizedBox(height: 40.0),
                 CustomInput(
+                  focusNode: _pessoaFisicaCubit.nameNode,
                   labelText: 'Nome completo',
-                  controller: _nomeController,
+                  controller: _pessoaFisicaCubit.nomeController,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
+                  focusNode: _pessoaFisicaCubit.dataNascimentoNode,
                   labelText: 'Data de nascimento',
-                  controller: _dataNascimentoController,
+                  controller: _pessoaFisicaCubit.dataNascimentoController,
                   inputType: TextInputType.datetime,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
+                  focusNode: _pessoaFisicaCubit.cpfNode,
                   labelText: 'CPF',
-                  controller: _cpfController,
+                  controller: _pessoaFisicaCubit.cpfController,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
+                  focusNode: _pessoaFisicaCubit.rgNode,
                   labelText: 'RG',
-                  controller: _rgController,
+                  controller: _pessoaFisicaCubit.rgController,
                 ),
                 const SizedBox(height: 80.0),
                 ElevatedButton(
@@ -109,7 +105,7 @@ class _PessoaFisicaDadosPessoaisPageState
                         Colors.teal), // Cor do texto do botão
                   ),
                   onPressed: () {
-                    // Ação para limpar o formulário
+                    _pessoaFisicaCubit.clearPessoaFisicaDadosCadeiraFields();
                   },
                   child: const Text('Limpar formulário'),
                 ),

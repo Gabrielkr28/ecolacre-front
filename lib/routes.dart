@@ -14,13 +14,13 @@ import 'package:project/app/cadeira/screens/cadeira_pessoa_fisica_juridica.dart'
 import 'package:project/app/cadeira/screens/cadeira_rodas_submenu.dart';
 import 'package:project/app/cadeira/screens/acompanhar_solicitacoes/acompanhar_solicitacoes_pesquisa.dart';
 import 'package:project/app/cadeira/screens/acompanhar_solicitacoes/acompanhar_solicitacoes_status.dart';
+import 'package:project/app/pontos_coleta/pontos_coleta.dart';
 
 final Map<String, WidgetBuilder> routes = {
   HomePage.route: (context) => const HomePage(),
 
-    //cadeira submenu
-  CadeiraRodasSubmenuPage.route: (context) =>
-      const CadeiraRodasSubmenuPage(),
+  //cadeira submenu
+  CadeiraRodasSubmenuPage.route: (context) => const CadeiraRodasSubmenuPage(),
 
   //cadeira
   CadeiraPessoaFisicaJuridicaPage.route: (context) =>
@@ -31,8 +31,7 @@ final Map<String, WidgetBuilder> routes = {
       const PessoaFisicaDadosPessoaisPage(),
   PessoaFisicaDadosMetragemCadeiraPage.route: (context) =>
       const PessoaFisicaDadosMetragemCadeiraPage(),
-  PessoaFisicaEnderecoPage.route: (context) => 
-      const PessoaFisicaEnderecoPage(),
+  PessoaFisicaEnderecoPage.route: (context) => const PessoaFisicaEnderecoPage(),
   PessoaFisicaDadosFamiliarPage.route: (context) =>
       const PessoaFisicaDadosFamiliarPage(),
   PessoaFisicaDadosCadeiraPage.route: (context) =>
@@ -48,11 +47,12 @@ final Map<String, WidgetBuilder> routes = {
   PessoaJuridicaEnderecoPage.route: (context) =>
       const PessoaJuridicaEnderecoPage(),
 
-   //Acompanhar solicitações cadeira de rodas
+  //Acompanhar solicitações cadeira de rodas
 
   AcompanharSoliciatacoesPesquisaPage.route: (context) =>
       const AcompanharSoliciatacoesPesquisaPage(),
   AcompanharSoliciatacoesStatusPage.route: (context) =>
       const AcompanharSoliciatacoesStatusPage(),
 
+  PontosColeta.route: (context) => const PontosColeta(),
 };

@@ -7,6 +7,7 @@ class CustomInput extends StatelessWidget {
   final TextInputType keyboardType;
   final TextInputType? inputType;
   final FormFieldValidator<String>? validator;
+  final FocusNode? focusNode;
 
   const CustomInput({
     super.key,
@@ -16,11 +17,13 @@ class CustomInput extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.validator,
     this.inputType,
+    this.focusNode,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      focusNode: focusNode,
       controller: controller,
       obscureText: obscureText,
       keyboardType: inputType ?? keyboardType,

@@ -1,7 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:project/app/cadeira/screens/pessoa_fisica/cubit/pessoa_fisica_cubit.dart';
 import 'package:project/app/cadeira/screens/pessoa_fisica/pessoa_fisica_dados_metragem_cadeira.dart';
+import 'package:project/app/core/util/application_binding.dart';
 import 'package:project/app/home/widgets/custom_input.dart';
 import 'package:project/app/home/widgets/radio_button.dart';
 
@@ -17,29 +19,16 @@ class PessoaFisicaDadosFamiliarPage extends StatefulWidget {
 class _PessoaFisicaDadosFamiliarPageState
     extends State<PessoaFisicaDadosFamiliarPage> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _qtdpessoasController;
-  late TextEditingController _rendaController;
-  late TextEditingController _motivoController;
-  late TextEditingController _estudaController;
-  late TextEditingController _trabalhaController;
 
+  late PessoaFisicaCubit _pessoaFisicaCubit;
   @override
   void initState() {
+    _pessoaFisicaCubit = BlocProvider.of<PessoaFisicaCubit>(context);
     super.initState();
-    _qtdpessoasController = TextEditingController();
-    _rendaController = TextEditingController();
-    _motivoController = TextEditingController();
-    _estudaController = TextEditingController();
-    _trabalhaController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _qtdpessoasController.dispose();
-    _rendaController.dispose();
-    _motivoController.dispose();
-    _estudaController.dispose();
-    _trabalhaController.dispose();
     super.dispose();
   }
 
@@ -73,18 +62,18 @@ class _PessoaFisicaDadosFamiliarPageState
                 const SizedBox(height: 40.0),
                 CustomInput(
                   labelText: 'Quantas pessoas vivem na sua casa?',
-                  controller: _qtdpessoasController,
+                  controller: _pessoaFisicaCubit.qtdpessoasController,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
                   labelText: 'Renda Familiar Média',
-                  controller: _rendaController,
+                  controller: _pessoaFisicaCubit.rendaController,
                   inputType: TextInputType.datetime,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
                   labelText: 'Porque você precisa da cadeira de rodas?',
-                  controller: _motivoController,
+                  controller: _pessoaFisicaCubit.motivoController,
                 ),
                 const SizedBox(height: 40.0),
                 YesNoRadioButton(

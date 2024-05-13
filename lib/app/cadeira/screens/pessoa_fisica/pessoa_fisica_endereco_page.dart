@@ -1,8 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:project/app/cadeira/screens/pessoa_fisica/cubit/pessoa_fisica_cubit.dart';
 import 'package:project/app/cadeira/screens/pessoa_fisica/pessoa_fisica_dados_familiar_page.dart';
-import 'package:project/app/cadeira/screens/pessoa_fisica/pessoa_fisica_dados_metragem_cadeira.dart';
+import 'package:project/app/core/util/application_binding.dart';
 import 'package:project/app/home/widgets/custom_input.dart';
 
 class PessoaFisicaEnderecoPage extends StatefulWidget {
@@ -16,29 +17,15 @@ class PessoaFisicaEnderecoPage extends StatefulWidget {
 
 class _PessoaFisicaEnderecoPageState extends State<PessoaFisicaEnderecoPage> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _enderecoController;
-  late TextEditingController _cidadeController;
-  late TextEditingController _ufController;
-  late TextEditingController _telefoneController;
-  late TextEditingController _emailController;
-
+  late PessoaFisicaCubit _pessoaFisicaCubit;
   @override
   void initState() {
+    _pessoaFisicaCubit = BlocProvider.of<PessoaFisicaCubit>(context);
     super.initState();
-    _enderecoController = TextEditingController();
-    _cidadeController = TextEditingController();
-    _ufController = TextEditingController();
-    _telefoneController = TextEditingController();
-    _emailController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _enderecoController.dispose();
-    _cidadeController.dispose();
-    _ufController.dispose();
-    _telefoneController.dispose();
-    _emailController.dispose();
     super.dispose();
   }
 
@@ -71,29 +58,35 @@ class _PessoaFisicaEnderecoPageState extends State<PessoaFisicaEnderecoPage> {
               children: <Widget>[
                 const SizedBox(height: 40.0),
                 CustomInput(
+                  focusNode: _pessoaFisicaCubit.enderecoNode,
                   labelText: 'Endereço',
-                  controller: _enderecoController,
+                  controller: _pessoaFisicaCubit.enderecoController,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
+                  focusNode: _pessoaFisicaCubit.cidadeNode,
                   labelText: 'Cidade',
-                  controller: _cidadeController,
+                  controller: _pessoaFisicaCubit.cidadeController,
                   inputType: TextInputType.datetime,
                 ),
                 const SizedBox(height: 40.0),
+                //TODO vitor - trocar por dropdown
                 CustomInput(
+                  focusNode: _pessoaFisicaCubit.ufNode,
                   labelText: 'UF',
-                  controller: _ufController,
+                  controller: _pessoaFisicaCubit.ufController,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
+                  focusNode: _pessoaFisicaCubit.telefoneNode,
                   labelText: 'Telefone',
-                  controller: _telefoneController,
+                  controller: _pessoaFisicaCubit.telefoneController,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
+                  focusNode: _pessoaFisicaCubit.emailNode,
                   labelText: 'E-mail',
-                  controller: _emailController,
+                  controller: _pessoaFisicaCubit.emailController,
                 ),
                 const SizedBox(height: 80.0),
                 ElevatedButton(
@@ -117,6 +110,7 @@ class _PessoaFisicaEnderecoPageState extends State<PessoaFisicaEnderecoPage> {
                         Colors.teal), // Cor do texto do botão
                   ),
                   onPressed: () {
+                    _pessoaFisicaCubit.clearPessoaFisicaEnderecoFields();
                     // Ação para limpar o formulário
                   },
                   child: const Text('Limpar formulário'),
