@@ -9,7 +9,7 @@ part 'pessoa_fisica_state.dart';
 class PessoaFisicaCubit extends Cubit<PessoaFisicaState> {
   PessoaFisicaCubit(this._fisicaSolicitacoesRepo)
       : super(PessoaFisicaInitial());
-  final PessoaFisicaSolicitacoesRepo _fisicaSolicitacoesRepo;
+  final SolicitacoesRepo _fisicaSolicitacoesRepo;
   final FocusNode nameNode = FocusNode();
   final FocusNode dataNascimentoNode = FocusNode();
   final FocusNode cpfNode = FocusNode();
@@ -87,36 +87,34 @@ class PessoaFisicaCubit extends Cubit<PessoaFisicaState> {
 
   Future<void> criarSolicitacao() async {
     emit(PessoaFisicaInitial());
-    try {
-      await _fisicaSolicitacoesRepo.criarSolicitacao(SolicitacaoModel(
-        nome: nomeController.text.trim(),
-        cpf: cpfController.text.formattedTaxVat,
-        dataNascimento: dataNascimentoController.text,
-        endereco: enderecoController.text,
-        cidade: cidadeController.text,
-        telefone: telefoneController.text,
-        rg: rgController.text,
-        uf: ufController.text,
-        email: emailController.text,
-        rendaFamiliarMedia: rendaController.text,
-        estuda: estuda,
-        trabalha: trabalha,
-        concordaTermosProjeto: true,
-        razaoCadeiraRodas: motivoController.text,
-        larguraCostasCm: int.tryParse(larguraCostasController.text),
-        pesoKg: int.tryParse(pesoController.text),
-        quadrilCm: int.tryParse(larguraQuadrilController.text),
-        alturaCm: int.tryParse(alturaController.text),
-        menorLarguraPortaCm: int.tryParse(larguraPortaController.text),
-        larguraAssentoCm: int.tryParse(larguraAssentoDesejadaController.text),
-        //TODO - mockado pois nao foi feito a regra ainda
-        responsavelNome: 'mock temporario',
-        responsavelTelefone: "mock temporario",
-        responsavelEmail: "mock temporario",
-      ));
-      emit(CriarPessoaFisicaSuccess());
-    } catch (e) {
-      emit(CriarPessoaFisicaError());
-    }
+    var result =
+        await _fisicaSolicitacoesRepo.criarSolicitacao(SolicitacaoModel(
+      nome: nomeController.text.trim(),
+      cpf: cpfController.text.formattedTaxVat,
+      dataNascimento: dataNascimentoController.text,
+      endereco: enderecoController.text,
+      cidade: cidadeController.text,
+      telefone: telefoneController.text,
+      rg: rgController.text,
+      uf: ufController.text,
+      email: emailController.text,
+      rendaFamiliarMedia: rendaController.text,
+      estuda: estuda,
+      trabalha: trabalha,
+      concordaTermosProjeto: true,
+      razaoCadeiraRodas: motivoController.text,
+      larguraCostasCm: int.tryParse(larguraCostasController.text),
+      pesoKg: int.tryParse(pesoController.text),
+      quadrilCm: int.tryParse(larguraQuadrilController.text),
+      alturaCm: int.tryParse(alturaController.text),
+      menorLarguraPortaCm: int.tryParse(larguraPortaController.text),
+      larguraAssentoCm: int.tryParse(larguraAssentoDesejadaController.text),
+      //TODO - esses campos nao existem
+      responsavelNome: 'mock temporario',
+      responsavelTelefone: "mock temporario",
+      responsavelEmail: "mock temporario",
+    ));
+    result.fold((failure) => emit(CriarSolicitacaoPessoaFisicaError()),
+        (success) => emit(CriarSolicitacaoPessoaFisicaSuccess()));
   }
 }

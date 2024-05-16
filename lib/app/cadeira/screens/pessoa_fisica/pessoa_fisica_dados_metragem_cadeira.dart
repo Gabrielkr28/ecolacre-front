@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:project/app/cadeira/screens/cadeira_pessoa_fisica_juridica.dart';
 import 'package:project/app/cadeira/screens/pessoa_fisica/cubit/pessoa_fisica_cubit.dart';
 import 'package:project/app/cadeira/screens/pessoa_fisica/pessoa_fisica_dados_cadeira_page.dart';
 import 'package:project/app/core/util/application_binding.dart';
@@ -33,6 +34,11 @@ class _PessoaFisicaDadosMetragemCadeiraPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Container(
+        color: const Color.fromARGB(255, 245, 245, 245),
+        height: 100,
+        child: const BottomNavBar(),
+      ),
       appBar: AppBar(
         title: const Text(
           'Solicitar cadeira de rodas',

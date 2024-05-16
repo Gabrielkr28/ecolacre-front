@@ -5,13 +5,14 @@ import 'package:project/app/core/util/exception.dart';
 import 'package:project/app/core/util/failures.dart';
 import 'package:project/app/core/util/type_defs.dart';
 
-abstract class PessoaFisicaSolicitacoesRepo {
-  ResultFuture criarSolicitacao(SolicitacaoModel solicitaoModel);
+abstract class SolicitacoesRepo<T> {
+  ResultFuture criarSolicitacao(T solicitaoModel);
 }
 
-class PessoaFisicaSolicitacoesRepoImpl extends PessoaFisicaSolicitacoesRepo {
+class PessoaFisicaSolicitacoesRepoImpl
+    extends SolicitacoesRepo<SolicitacaoModel> {
   PessoaFisicaSolicitacoesRepoImpl(this._pessoaFisicaSolicitacoesDataSource);
-  final PessoaFisicaSolicitacoesDataSource _pessoaFisicaSolicitacoesDataSource;
+  final SolicitacoesDataSource _pessoaFisicaSolicitacoesDataSource;
   @override
   ResultFuture criarSolicitacao(SolicitacaoModel solicitaoModel) async {
     try {

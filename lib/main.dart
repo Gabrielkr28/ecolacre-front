@@ -7,11 +7,12 @@ import 'package:project/routes.dart';
 Future<void> main() async {
   await init();
   runApp(
-      // DevicePreview(
-      //   enabled: !kReleaseMode,
-      //   builder: (context) => const MyApp(), // Wrap your app
-      // ),
-      const MyApp());
+    // DevicePreview(
+    //   enabled: !kReleaseMode,
+    //   builder: (context) => const MyApp(), // Wrap your app
+    // ),
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {

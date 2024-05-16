@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:project/app/cadeira/screens/cadeira_pessoa_fisica_juridica.dart';
+import 'package:project/app/home/screens/home_page.dart';
 import 'package:project/asset/image_asset.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -53,89 +55,106 @@ class _PontosColetaState extends State<PontosColeta> {
   List<PontosColetaModel> pontosColetaFiltered = pontosColetasList;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Pontos de coleta',
-          style: TextStyle(fontWeight: FontWeight.bold),
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        bottomNavigationBar: Container(
+          color: const Color.fromARGB(255, 245, 245, 245),
+          height: 100,
+          child: const BottomNavBar(),
         ),
-        backgroundColor: Colors.white, // Customize the app bar color
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 15, right: 20, left: 20),
-            child: TextField(
-              onChanged: (value) {
-                if (value == '') {
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.popAndPushNamed(
+              context,
+              HomePage.route,
+            ),
+          ),
+
+          title: const Text(
+            'Pontos de coleta',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.white, // Customize the app bar color
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15, right: 20, left: 20),
+              child: TextField(
+                onChanged: (value) {
+                  if (value == '') {
+                    setState(() {
+                      pontosColetaFiltered = pontosColetasList;
+                    });
+                  }
                   setState(() {
-                    pontosColetaFiltered = pontosColetasList;
+                    pontosColetaFiltered = pontosColetasList
+                        .where((element) => element.nome
+                            .toLowerCase()
+                            .contains(value.toLowerCase().trim()))
+                        .toList();
                   });
-                }
-                setState(() {
-                  pontosColetaFiltered = pontosColetasList
-                      .where((element) => element.nome
-                          .toLowerCase()
-                          .contains(value.toLowerCase().trim()))
-                      .toList();
-                });
-              },
-              cursorColor: Colors.black,
-              cursorWidth: 1,
-              decoration: const InputDecoration(
-                hintText: 'Procure aqui',
-                hintStyle: TextStyle(color: Color.fromARGB(255, 186, 186, 186)),
-                contentPadding: EdgeInsets.all(15),
-                prefixIcon: Icon(Icons.search),
-                enabledBorder: border,
-                border: border,
-                focusedBorder: border,
+                },
+                cursorColor: Colors.black,
+                cursorWidth: 1,
+                decoration: const InputDecoration(
+                  hintText: 'Procure aqui',
+                  hintStyle:
+                      TextStyle(color: Color.fromARGB(255, 186, 186, 186)),
+                  contentPadding: EdgeInsets.all(15),
+                  prefixIcon: Icon(Icons.search),
+                  enabledBorder: border,
+                  border: border,
+                  focusedBorder: border,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(25)),
-              ),
-              child: Column(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      'Resultados',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Divider(
-                      color: Colors.black,
-                    ),
-                  ),
-                  Visibility(
-                    visible: pontosColetaFiltered.isNotEmpty,
-                    replacement: const Expanded(
-                      child: Center(
-                        child:
-                            Text('Não foi possível encontrar pontos de coleta'),
+            Expanded(
+              child: Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                ),
+                child: Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Resultados',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 17),
                       ),
                     ),
-                    child: Expanded(
-                      child: ListView.builder(
-                        itemBuilder: (context, index) => PontoColetaWidget(
-                          pontoColetaModel: pontosColetaFiltered[index],
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Divider(
+                        color: Colors.black,
+                      ),
+                    ),
+                    Visibility(
+                      visible: pontosColetaFiltered.isNotEmpty,
+                      replacement: const Expanded(
+                        child: Center(
+                          child: Text(
+                              'Não foi possível encontrar pontos de coleta'),
                         ),
-                        itemCount: pontosColetaFiltered.length,
+                      ),
+                      child: Expanded(
+                        child: ListView.builder(
+                          itemBuilder: (context, index) => PontoColetaWidget(
+                            pontoColetaModel: pontosColetaFiltered[index],
+                          ),
+                          itemCount: pontosColetaFiltered.length,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

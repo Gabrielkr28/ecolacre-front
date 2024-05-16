@@ -1,7 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:project/app/cadeira/screens/cadeira_pessoa_fisica_juridica.dart';
+import 'package:project/app/cadeira/screens/pessoa_juridica/cubit/pessoa_juridica_cubit.dart';
 import 'package:project/app/cadeira/screens/pessoa_juridica/pessoa_juridica_detalhes_page.dart';
+import 'package:project/app/core/util/application_binding.dart';
 import 'package:project/app/home/widgets/custom_input.dart';
 
 class PessoaJuridicaEnderecoPage extends StatefulWidget {
@@ -16,35 +19,27 @@ class PessoaJuridicaEnderecoPage extends StatefulWidget {
 class _PessoaJuridicaEnderecoPageState
     extends State<PessoaJuridicaEnderecoPage> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _enderecoController;
-  late TextEditingController _cidadeController;
-  late TextEditingController _ufController;
-  late TextEditingController _telefoneController;
-  late TextEditingController _emailController;
 
+  late PessoaJuridicaCubit pessoaJuridicaCubit;
   @override
   void initState() {
+    pessoaJuridicaCubit = BlocProvider.of<PessoaJuridicaCubit>(context);
     super.initState();
-    _enderecoController = TextEditingController();
-    _cidadeController = TextEditingController();
-    _ufController = TextEditingController();
-    _telefoneController = TextEditingController();
-    _emailController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _enderecoController.dispose();
-    _cidadeController.dispose();
-    _ufController.dispose();
-    _telefoneController.dispose();
-    _emailController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Container(
+        color: const Color.fromARGB(255, 245, 245, 245),
+        height: 100,
+        child: const BottomNavBar(),
+      ),
       appBar: AppBar(
         title: const Text(
           'Solicitar cadeira de rodas',
@@ -72,28 +67,28 @@ class _PessoaJuridicaEnderecoPageState
                 const SizedBox(height: 40.0),
                 CustomInput(
                   labelText: 'Endereço',
-                  controller: _enderecoController,
+                  controller: pessoaJuridicaCubit.enderecoController,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
                   labelText: 'Cidade',
-                  controller: _cidadeController,
+                  controller: pessoaJuridicaCubit.cidadeController,
                   inputType: TextInputType.datetime,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
                   labelText: 'UF',
-                  controller: _ufController,
+                  controller: pessoaJuridicaCubit.ufController,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
                   labelText: 'Telefone',
-                  controller: _telefoneController,
+                  controller: pessoaJuridicaCubit.telefoneController,
                 ),
                 const SizedBox(height: 40.0),
                 CustomInput(
                   labelText: 'E-mail',
-                  controller: _emailController,
+                  controller: pessoaJuridicaCubit.emailController,
                 ),
                 const SizedBox(height: 80.0),
                 ElevatedButton(
