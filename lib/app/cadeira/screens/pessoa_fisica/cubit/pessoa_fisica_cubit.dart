@@ -2,7 +2,11 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:project/app/cadeira/screens/pessoa_fisica/data/models/solicitacoes_model.dart';
 import 'package:project/app/cadeira/screens/pessoa_fisica/data/repos/pessoa_fisica_solicitacoes_repo.dart';
+import 'package:project/app/cadeira/screens/pessoa_fisica/pessoa_fisica_dados_familiar_page.dart';
+import 'package:project/app/cadeira/screens/pessoa_fisica/pessoa_fisica_dados_pessoais_page.dart';
+import 'package:project/app/cadeira/screens/pessoa_fisica/pessoa_fisica_endereco_page.dart';
 import 'package:project/app/core/util/extensions.dart';
+import 'package:project/app/core/util/validator.dart';
 
 part 'pessoa_fisica_state.dart';
 
@@ -33,8 +37,9 @@ class PessoaFisicaCubit extends Cubit<PessoaFisicaState> {
       TextEditingController();
   late final TextEditingController rendaController = TextEditingController();
   late final TextEditingController motivoController = TextEditingController();
-  late final bool estuda = true;
-  late final bool trabalha = true;
+  late bool estuda = true;
+  late bool trabalha = true;
+  late bool cadeiraBanho = true;
   late final TextEditingController larguraCostasController =
       TextEditingController();
   late final TextEditingController larguraQuadrilController =
@@ -70,6 +75,78 @@ class PessoaFisicaCubit extends Cubit<PessoaFisicaState> {
     ufNode.unfocus();
     telefoneNode.unfocus();
     emailNode.unfocus();
+  }
+
+  void fetch() {
+    emit(FetchingSuccess());
+    emit(FetchedSuccess());
+  }
+
+  void setEstuda(bool value) {
+    emit(FetchingSuccess());
+    estuda = value;
+    emit(FetchedSuccess());
+  }
+
+  void setTrabalha(bool value) {
+    emit(FetchingSuccess());
+    trabalha = value;
+    emit(FetchedSuccess());
+  }
+
+  void setCadeiraBanho(bool value) {
+    emit(FetchingSuccess());
+    cadeiraBanho = value;
+    emit(FetchedSuccess());
+  }
+
+  bool getButtonStatus(String page) {
+    switch (page) {
+      case PessoaFisicaDadosPessoaisPage.route:
+        {
+          return (TextFormValidator.validateName(
+                    nomeController.text.trim(),
+                  ) ==
+                  null &&
+              TextFormValidator.validateDate(
+                    dataNascimentoController.text.trim(),
+                  ) ==
+                  null &&
+              TextFormValidator.validateTaxVat(
+                    cpfController.text.trim(),
+                  ) ==
+                  null &&
+              rgController.text.isNotEmpty);
+        }
+      case PessoaFisicaEnderecoPage.route:
+        {
+          return (TextFormValidator.validateName(
+                      enderecoController.text.trim()) ==
+                  null &&
+              TextFormValidator.validateName(cidadeController.text.trim()) ==
+                  null &&
+              TextFormValidator.validateName(ufController.text.trim()) ==
+                  null &&
+              TextFormValidator.validatePhoneNumber(
+                      telefoneController.text.trim()) ==
+                  null &&
+              TextFormValidator.validateEmail(emailController.text.trim()) ==
+                  null);
+        }
+      case PessoaFisicaDadosFamiliarPage.route:
+        {
+          return (TextFormValidator.validateQtdCadeira(
+                      qtdpessoasController.text.trim()) ==
+                  null &&
+              TextFormValidator.validateQtdCadeira(
+                      rendaController.text.trim()) ==
+                  null &&
+              TextFormValidator.validateName(motivoController.text.trim()) ==
+                  null);
+        }
+      default:
+        return true;
+    }
   }
 
   clearPessoaFisicaDadosMetragemFields() {

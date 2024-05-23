@@ -5,11 +5,15 @@ import 'package:project/app/cadeira/screens/cadeira_pessoa_fisica_juridica.dart'
 import 'package:project/app/cadeira/screens/pessoa_fisica/cubit/pessoa_fisica_cubit.dart';
 import 'package:project/app/cadeira/screens/pessoa_fisica/pessoa_fisica_endereco_page.dart';
 import 'package:project/app/core/util/application_binding.dart';
-import 'package:project/app/home/widgets/custom_input.dart';
+import 'package:project/app/shared/validator/data_input_formatter.dart';
+import 'package:project/app/shared/validator/name_input_formatter.dart';
+import 'package:project/app/shared/validator/tax_vat_input_formatter.dart';
+import 'package:project/app/shared/widgets/standart_button.dart';
+import 'package:project/app/shared/widgets/standart_text_field.dart';
 
 class PessoaFisicaDadosPessoaisPage extends StatefulWidget {
   const PessoaFisicaDadosPessoaisPage({super.key});
-  static String route = '/pessoa-fisica-dados-pessoais-page';
+  static const String route = '/pessoa-fisica-dados-pessoais-page';
 
   @override
   _PessoaFisicaDadosPessoaisPageState createState() =>
@@ -34,92 +38,87 @@ class _PessoaFisicaDadosPessoaisPageState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: Container(
-        color: const Color.fromARGB(255, 245, 245, 245),
-        height: 100,
-        child: const BottomNavBar(),
-      ),
-      appBar: AppBar(
-        title: const Text(
-          'Solicitar cadeira de rodas',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-
-        backgroundColor: Colors.white, // Customize the app bar color
-        bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(20.0),
-          child: Text(
-            'Leia atentamente ao regulamento clicando aqui antes de solicitar sua cadeira de rodas.',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 13.0),
+    return BlocBuilder<PessoaFisicaCubit, PessoaFisicaState>(
+      builder: (context, state) {
+        return Scaffold(
+          bottomNavigationBar: Container(
+            color: const Color.fromARGB(255, 245, 245, 245),
+            height: MediaQuery.of(context).size.height * 0.1,
+            child: const BottomNavBar(),
           ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                const SizedBox(height: 40.0),
-                CustomInput(
-                  focusNode: _pessoaFisicaCubit.nameNode,
-                  labelText: 'Nome completo',
-                  controller: _pessoaFisicaCubit.nomeController,
-                ),
-                const SizedBox(height: 40.0),
-                CustomInput(
-                  focusNode: _pessoaFisicaCubit.dataNascimentoNode,
-                  labelText: 'Data de nascimento',
-                  controller: _pessoaFisicaCubit.dataNascimentoController,
-                  inputType: TextInputType.datetime,
-                ),
-                const SizedBox(height: 40.0),
-                CustomInput(
-                  focusNode: _pessoaFisicaCubit.cpfNode,
-                  labelText: 'CPF',
-                  controller: _pessoaFisicaCubit.cpfController,
-                ),
-                const SizedBox(height: 40.0),
-                CustomInput(
-                  focusNode: _pessoaFisicaCubit.rgNode,
-                  labelText: 'RG',
-                  controller: _pessoaFisicaCubit.rgController,
-                ),
-                const SizedBox(height: 80.0),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Colors.teal), // Cor de fundo do botão
-                    foregroundColor: MaterialStateProperty.all<Color>(
-                        Colors.white), // Cor do texto do botão
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Navigator.of(context)
-                          .pushNamed(PessoaFisicaEnderecoPage.route);
-                    }
-                  },
-                  child: const Text('Avançar'),
-                ),
-                TextButton(
-                  style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all<Color>(
-                        Colors.teal), // Cor do texto do botão
-                  ),
-                  onPressed: () {
-                    _pessoaFisicaCubit.clearPessoaFisicaDadosCadeiraFields();
-                  },
-                  child: const Text('Limpar formulário'),
-                ),
-              ],
+          appBar: AppBar(
+            title: const Text(
+              'Solicitar cadeira de rodas',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+
+            backgroundColor: Colors.white, // Customize the app bar color
+            bottom: const PreferredSize(
+              preferredSize: Size.fromHeight(20.0),
+              child: Text(
+                'Leia atentamente ao regulamento clicando aqui antes de solicitar sua cadeira de rodas.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 13.0),
+              ),
             ),
           ),
-        ),
-      ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    StandardTextField(
+                      onChanged: (value) => _pessoaFisicaCubit.fetch(),
+                      compoundableFormatter: NameInputFormatter(),
+                      controller: _pessoaFisicaCubit.nomeController,
+                    ),
+                    StandardTextField(
+                      onChanged: (value) => _pessoaFisicaCubit.fetch(),
+                      compoundableFormatter: DataInputFormatter(
+                          controller:
+                              _pessoaFisicaCubit.dataNascimentoController),
+                      controller: _pessoaFisicaCubit.dataNascimentoController,
+                    ),
+                    StandardTextField(
+                      onChanged: (value) => _pessoaFisicaCubit.fetch(),
+                      compoundableFormatter: TaxVatInputFormatter(
+                          controller: _pessoaFisicaCubit.cpfController),
+                      controller: _pessoaFisicaCubit.cpfController,
+                    ),
+                    StandardTextField(
+                      onChanged: (value) => _pessoaFisicaCubit.fetch(),
+                      compoundableFormatter: RgInputFormatter(
+                          controller: _pessoaFisicaCubit.rgController),
+                      controller: _pessoaFisicaCubit.rgController,
+                    ),
+                    StandardButton(
+                      onPressed: () => Navigator.pushNamed(
+                          context, PessoaFisicaEnderecoPage.route),
+                      enabled: _pessoaFisicaCubit
+                          .getButtonStatus(PessoaFisicaDadosPessoaisPage.route),
+                      text: 'Avançar',
+                    ),
+                    TextButton(
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all<Color>(
+                            Colors.teal), // Cor do texto do botão
+                      ),
+                      onPressed: () {
+                        _pessoaFisicaCubit
+                            .clearPessoaFisicaDadosCadeiraFields();
+                      },
+                      child: const Text('Limpar formulário'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

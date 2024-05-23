@@ -6,10 +6,13 @@ import 'package:project/app/cadeira/screens/pessoa_juridica/cubit/pessoa_juridic
 import 'package:project/app/cadeira/screens/pessoa_juridica/pessoa_juridica_dados_cadeira_page.dart';
 import 'package:project/app/core/util/application_binding.dart';
 import 'package:project/app/home/widgets/custom_input.dart';
+import 'package:project/app/shared/validator/name_input_formatter.dart';
+import 'package:project/app/shared/widgets/standart_button.dart';
+import 'package:project/app/shared/widgets/standart_text_field.dart';
 
 class PessoaJuridicaDetalhesPage extends StatefulWidget {
   const PessoaJuridicaDetalhesPage({super.key});
-  static String route = '/pessoa-juridica-detalhes-page';
+  static const String route = '/pessoa-juridica-detalhes-page';
   @override
   _PessoaJuridicaDetalhesPageState createState() =>
       _PessoaJuridicaDetalhesPageState();
@@ -32,88 +35,87 @@ class _PessoaJuridicaDetalhesPageState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: Container(
-        color: const Color.fromARGB(255, 245, 245, 245),
-        height: 100,
-        child: const BottomNavBar(),
-      ),
-      appBar: AppBar(
-        title: const Text(
-          'Solicitar cadeira de rodas',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-
-        backgroundColor: Colors.white, // Customize the app bar color
-        bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(20.0),
-          child: Text(
-            'Leia atentamente ao regulamento clicando aqui antes de solicitar sua cadeira de rodas.',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 13.0),
+    return BlocBuilder<PessoaJuridicaCubit, PessoaJuridicaState>(
+      builder: (context, state) {
+        return Scaffold(
+          bottomNavigationBar: Container(
+            color: const Color.fromARGB(255, 245, 245, 245),
+            height: MediaQuery.of(context).size.height * 0.1,
+            child: const BottomNavBar(),
           ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                const SizedBox(height: 40.0),
-                CustomInput(
-                  labelText: 'Segmento instituição:',
-                  controller: pessoaJuridicaCubit.segmentoController,
-                ),
-                const SizedBox(height: 40.0),
-                CustomInput(
-                  labelText: 'Quantidade Colaboradores:',
-                  controller: pessoaJuridicaCubit.qtdColaboradoresController,
-                  inputType: TextInputType.datetime,
-                ),
-                const SizedBox(height: 40.0),
-                CustomInput(
-                  labelText: 'Recebe algum incentivo Financeiro:',
-                  controller: pessoaJuridicaCubit.incentivoFinanceiroController,
-                ),
-                const SizedBox(height: 40.0),
-                CustomInput(
-                  labelText: 'Possui cadeiras de rodas?:',
-                  controller: pessoaJuridicaCubit.possuiCadeirasController,
-                ),
-                const SizedBox(height: 80.0),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Colors.teal), // Cor de fundo do botão
-                    foregroundColor: MaterialStateProperty.all<Color>(
-                        Colors.white), // Cor do texto do botão
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Navigator.of(context)
-                          .pushNamed(PessoaJuridicaDadosCadeiraPage.route);
-                    }
-                  },
-                  child: const Text('Avançar'),
-                ),
-                TextButton(
-                  style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all<Color>(
-                        Colors.teal), // Cor do texto do botão
-                  ),
-                  onPressed: () {
-                    // Ação para limpar o formulário
-                  },
-                  child: const Text('Limpar formulário'),
-                ),
-              ],
+          appBar: AppBar(
+            title: const Text(
+              'Solicitar cadeira de rodas',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+
+            backgroundColor: Colors.white, // Customize the app bar color
+            bottom: const PreferredSize(
+              preferredSize: Size.fromHeight(20.0),
+              child: Text(
+                'Leia atentamente ao regulamento clicando aqui antes de solicitar sua cadeira de rodas.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 13.0),
+              ),
             ),
           ),
-        ),
-      ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    StandardTextField(
+                      onChanged: (value) => pessoaJuridicaCubit.fetch(),
+                      compoundableFormatter: SegmentoInputFormatter(),
+                      controller: pessoaJuridicaCubit.segmentoController,
+                    ),
+                    StandardTextField(
+                      onChanged: (value) => pessoaJuridicaCubit.fetch(),
+                      compoundableFormatter: QtdColaboradoresInputFormatter(),
+                      controller:
+                          pessoaJuridicaCubit.qtdColaboradoresController,
+                    ),
+                    StandardTextField(
+                      onChanged: (value) => pessoaJuridicaCubit.fetch(),
+                      compoundableFormatter:
+                          IncentivoFinanceiroInputFormatter(),
+                      controller:
+                          pessoaJuridicaCubit.incentivoFinanceiroController,
+                    ),
+                    StandardTextField(
+                      onChanged: (value) => pessoaJuridicaCubit.fetch(),
+                      compoundableFormatter: QuantidadeCadeirasInputFormatter(),
+                      controller:
+                          pessoaJuridicaCubit.qtdCadeirasDeRodasController,
+                    ),
+                    StandardButton(
+                      onPressed: () => Navigator.pushNamed(
+                          context, PessoaJuridicaDadosCadeiraPage.route),
+                      enabled: pessoaJuridicaCubit
+                          .getButtonStatus(PessoaJuridicaDetalhesPage.route),
+                      text: 'Avançar',
+                    ),
+                    TextButton(
+                      style: ButtonStyle(
+                        overlayColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                        foregroundColor: MaterialStateProperty.all<Color>(
+                            Colors.black), // Cor do texto do botão
+                      ),
+                      onPressed: () =>
+                          pessoaJuridicaCubit.clearDadosPessoaisFields(),
+                      child: const Text('Limpar formulário'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

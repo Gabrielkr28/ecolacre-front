@@ -26,7 +26,7 @@ class _CadeiraRodasSubmenuPage extends State<CadeiraRodasSubmenuPage> {
     return Scaffold(
       bottomNavigationBar: Container(
         color: const Color.fromARGB(255, 245, 245, 245),
-        height: 100,
+        height: MediaQuery.of(context).size.height * 0.1,
         child: const BottomNavBar(),
       ),
       backgroundColor: Colors.white,
@@ -54,7 +54,7 @@ class _CadeiraRodasSubmenuPage extends State<CadeiraRodasSubmenuPage> {
           children: <Widget>[
             Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   SizedBox(
                     width: double.infinity,
@@ -64,7 +64,7 @@ class _CadeiraRodasSubmenuPage extends State<CadeiraRodasSubmenuPage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.teal,
                             minimumSize: const Size(double.infinity,
-                                240), // Aumentando a altura do botão
+                                150), // Aumentando a altura do botão
                             elevation: 2,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
@@ -92,7 +92,7 @@ class _CadeiraRodasSubmenuPage extends State<CadeiraRodasSubmenuPage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.teal,
                             minimumSize: const Size(double.infinity,
-                                240), // Aumentando a altura do botão
+                                150), // Aumentando a altura do botão
                             elevation: 2,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(

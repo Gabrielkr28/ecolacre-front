@@ -5,17 +5,17 @@ class YesNoRadioButton extends StatefulWidget {
   final Function(bool?) onSelection;
 
   const YesNoRadioButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.onSelection,
-  }) : super(key: key);
+  });
 
   @override
   _YesNoRadioButtonState createState() => _YesNoRadioButtonState();
 }
 
 class _YesNoRadioButtonState extends State<YesNoRadioButton> {
-  bool? _groupValue;
+  bool? _groupValue = true;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class _YesNoRadioButtonState extends State<YesNoRadioButton> {
       children: <Widget>[
         Text(
           widget.label,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,

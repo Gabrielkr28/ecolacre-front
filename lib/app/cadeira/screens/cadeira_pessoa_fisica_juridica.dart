@@ -1,12 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:project/app/cadeira/screens/pessoa_fisica/cubit/pessoa_fisica_cubit.dart';
 import 'package:project/app/cadeira/screens/pessoa_fisica/pessoa_fisica_dados_pessoais_page.dart';
-import 'package:project/app/cadeira/screens/pessoa_juridica/cubit/pessoa_juridica_cubit.dart';
 import 'package:project/app/cadeira/screens/pessoa_juridica/pessoa_juridica_dados_pessoais.dart';
 import 'package:project/app/core/util/application_binding.dart';
 import 'package:project/app/home/screens/home_page.dart';
@@ -41,7 +37,7 @@ class _CadeiraPessoaFisicaJuridicaPageState
     return Scaffold(
       bottomNavigationBar: Container(
         color: const Color.fromARGB(255, 245, 245, 245),
-        height: 100,
+        height: MediaQuery.of(context).size.height * 0.1,
         child: const BottomNavBar(),
       ),
       appBar: AppBar(

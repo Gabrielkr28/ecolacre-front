@@ -9,6 +9,12 @@ sealed class PessoaJuridicaState extends Equatable {
 
 final class PessoaJuridicaInitial extends PessoaJuridicaState {}
 
+final class CriarSolicitacaoPessoaJuridicaLoading extends PessoaJuridicaState {}
+
 final class CriarSolicitacaoPessoaJuridicaSuccess extends PessoaJuridicaState {}
 
 final class CriarSolicitacaoPessoaJuridicaError extends PessoaJuridicaState {}
+
+final class FetchingSuccess extends PessoaJuridicaState {}
+
+final class FetchedSuccess extends PessoaJuridicaState {}

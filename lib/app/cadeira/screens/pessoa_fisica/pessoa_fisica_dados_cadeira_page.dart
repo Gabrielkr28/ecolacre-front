@@ -4,10 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:project/app/cadeira/screens/cadeira_pessoa_fisica_juridica.dart';
 import 'package:project/app/cadeira/screens/pessoa_fisica/cubit/pessoa_fisica_cubit.dart';
+import 'package:project/app/cadeira/screens/pessoa_fisica/pessoa_fisica_dados_pessoais_page.dart';
+import 'package:project/app/cadeira/screens/pessoa_fisica/pessoa_fisica_endereco_page.dart';
 import 'package:project/app/core/util/application_binding.dart';
 import 'package:project/app/home/screens/home_page.dart';
 import 'package:project/app/home/widgets/custom_input.dart';
 import 'package:project/app/home/widgets/radio_button.dart';
+import 'package:project/app/shared/validator/data_input_formatter.dart';
+import 'package:project/app/shared/widgets/standart_button.dart';
+import 'package:project/app/shared/widgets/standart_text_field.dart';
 
 class PessoaFisicaDadosCadeiraPage extends StatefulWidget {
   const PessoaFisicaDadosCadeiraPage({super.key});
@@ -59,13 +64,6 @@ class _PessoaFisicaDadosCadeiraPageState
               snackBarStyle: const SnackBarStyle(
                   backgroundColor: Color.fromARGB(255, 219, 92, 92),
                   labelTextStyle: TextStyle(fontWeight: FontWeight.bold)));
-          Future.delayed(
-            const Duration(seconds: 2),
-            () => Navigator.popAndPushNamed(
-              context,
-              HomePage.route,
-            ),
-          );
         }
       },
       child: Scaffold(
@@ -99,37 +97,60 @@ class _PessoaFisicaDadosCadeiraPageState
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   const SizedBox(height: 40.0),
-                  CustomInput(
-                    labelText: 'Qual largura de assento você deseja? (cm)',
-                    controller:
-                        _pessoaFisicaCubit.larguraAssentoDesejadaController,
+                  StandardTextField(
+                    onChanged: (value) => _pessoaFisicaCubit.fetch(),
+                    compoundableFormatter: DataInputFormatter(
+                        controller:
+                            _pessoaFisicaCubit.dataNascimentoController),
+                    controller: _pessoaFisicaCubit.dataNascimentoController,
                   ),
-                  const SizedBox(height: 40.0),
-                  CustomInput(
-                    labelText: 'Qual menor largura de porta da sua casa? (cm)',
-                    controller: _pessoaFisicaCubit.larguraPortaController,
-                    inputType: TextInputType.datetime,
+                  // CustomInput(
+                  //   labelText: 'Qual largura de assento você deseja? (cm)',
+                  //   controller:
+                  //       _pessoaFisicaCubit.larguraAssentoDesejadaController,
+                  // ),
+                  StandardTextField(
+                    onChanged: (value) => _pessoaFisicaCubit.fetch(),
+                    compoundableFormatter: DataInputFormatter(
+                        controller:
+                            _pessoaFisicaCubit.dataNascimentoController),
+                    controller: _pessoaFisicaCubit.dataNascimentoController,
                   ),
-                  const SizedBox(height: 40.0),
+                  // CustomInput(
+                  //   labelText: 'Qual menor largura de porta da sua casa? (cm)',
+                  //   controller: _pessoaFisicaCubit.larguraPortaController,
+                  //   inputType: TextInputType.datetime,
+                  // ),
                   YesNoRadioButton(
                     label: 'Possui cadeira de banho?',
-                    onSelection: (bool? value) {},
+                    onSelection: (bool? value) {
+                      _pessoaFisicaCubit.setCadeiraBanho(value!);
+                    },
                   ),
-                  const SizedBox(height: 80.0),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Colors.teal), // Cor de fundo do botão
-                      foregroundColor: MaterialStateProperty.all<Color>(
-                          Colors.white), // Cor do texto do botão
-                    ),
+                  StandardButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         await _pessoaFisicaCubit.criarSolicitacao();
                       }
                     },
-                    child: const Text('Avançar'),
+                    enabled: _pessoaFisicaCubit
+                        .getButtonStatus(PessoaFisicaDadosPessoaisPage.route),
+                    text: 'Avançar',
                   ),
+                  // ElevatedButton(
+                  //   style: ButtonStyle(
+                  //     backgroundColor: MaterialStateProperty.all<Color>(
+                  //         Colors.teal), // Cor de fundo do botão
+                  //     foregroundColor: MaterialStateProperty.all<Color>(
+                  //         Colors.white), // Cor do texto do botão
+                  //   ),
+                  //   onPressed: () async {
+                  //     if (_formKey.currentState!.validate()) {
+                  //       await _pessoaFisicaCubit.criarSolicitacao();
+                  //     }
+                  //   },
+                  //   child: const Text('Avançar'),
+                  // ),
                   TextButton(
                     style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all<Color>(
